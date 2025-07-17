@@ -8,165 +8,67 @@
         @import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
 
         :root {
-            --bg-color: #f0f8ff;
-            --main-color: #ffb6c1;
-            --accent-color: #ffd700;
-            --text-color: #555;
-            --correct-color: #32cd32;
-            --wrong-color: #ff6347;
-            --level-up-color: #9370db;
-            --black-key-color: #555; /* 黒鍵ボタンの色 */
+            --bg-color: #f0f8ff; --main-color: #ffb6c1; --accent-color: #ffd700;
+            --text-color: #555; --correct-color: #32cd32; --wrong-color: #ff6347;
+            --level-up-color: #9370db; --black-key-color: #333;
         }
 
         body {
-            font-family: 'Mochiy+Pop+One', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 1rem 0; /* スマホで縦長になった時用 */
-            text-align: center;
-            overflow-x: hidden;
+            font-family: 'Mochiy+Pop+One', sans-serif; background-color: var(--bg-color);
+            color: var(--text-color); display: flex; justify-content: center;
+            align-items: center; min-height: 100vh; margin: 0; padding: 1rem 0;
+            text-align: center; overflow-x: hidden;
         }
 
         .container {
-            background-color: white;
-            padding: 1.5rem 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 600px; /* 横幅を少し広げる */
-            position: relative;
-            cursor: default;
+            background-color: white; padding: 1rem 1.5rem; border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); width: 95%; max-width: 600px;
+            position: relative; cursor: default;
         }
+        .container.ready-for-next, .container.game-cleared { cursor: pointer; }
 
-        .container.ready-for-next, .container.game-cleared {
-            cursor: pointer;
-        }
+        h1 { color: var(--main-color); margin-top: 0; font-size: 1.8rem; }
+        .info-panel { display: flex; justify-content: space-between; font-size: 1rem; margin-bottom: 0.5rem; }
+        .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: 10px; margin: 0.5rem 0; height: 22px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background-color: var(--accent-color); border-radius: 10px; transition: width 0.5s ease-in-out; text-align: center; line-height: 22px; color: white; font-size: 0.8rem; white-space: nowrap; }
+        #play-button { background-color: var(--main-color); color: white; border: none; border-radius: 50%; width: 100px; height: 100px; font-size: 3.5rem; cursor: pointer; transition: all 0.2s; margin-bottom: 1rem; line-height: 100px; }
 
-        h1 {
-            color: var(--main-color);
-            margin-top: 0;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            margin: 1rem 0;
-            height: 22px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background-color: var(--accent-color);
-            border-radius: 10px;
-            transition: width 0.5s ease-in-out;
-            text-align: center;
-            line-height: 22px;
-            color: white;
-            font-size: 0.8rem;
-            white-space: nowrap;
-        }
+        /* ★文字ボタンのスタイル (黒鍵の色を修正) */
+        .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(65px, 1fr)); gap: 8px; margin-bottom: 1rem; }
+        .choice-btn { background-color: var(--accent-color); color: white; border: none; padding: 0.8rem 0.2rem; border-radius: 10px; font-size: 1.2rem; font-family: 'Mochiy Pop One', sans-serif; cursor: pointer; transition: all 0.2s; }
+        .choice-btn.black-key { background-color: var(--black-key-color); }
         
-        .info-panel {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        #play-button {
-            background-color: var(--main-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-            font-size: 3.5rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 1rem;
-            line-height: 100px;
-        }
-
-        .choices {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
-            gap: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .choice-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 0.8rem 0.2rem;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            font-family: 'Mochiy Pop One', sans-serif;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        /* 黒鍵用のスタイル */
-        .choice-btn.black-key {
-            background-color: var(--black-key-color);
-        }
-
-        .feedback {
-            font-size: 1.5rem;
-            font-weight: bold;
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .feedback .sub-text {
-            font-size: 1rem;
-            color: #888;
-            margin-top: 5px;
-        }
+        .feedback { font-size: 1.3rem; font-weight: bold; min-height: 60px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .feedback .sub-text { font-size: 1rem; color: #888; margin-top: 5px; }
 
         .feedback.correct { color: var(--correct-color); animation: bounce 0.5s; }
         .feedback.wrong { color: var(--wrong-color); animation: shake 0.5s; }
         .feedback.level-up { color: var(--level-up-color); animation: bounce 0.8s; }
-        
-        #start-button, #restart-button {
-            background-color: var(--main-color);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            font-family: 'Mochiy Pop One', sans-serif;
-            margin-top: 1rem;
-        }
 
-        .game-screen, #clear-screen { display: none; }
-        
-        #clear-screen h1 {
-            font-size: 2.5rem;
-            color: var(--level-up-color);
-            animation: bounce 2s infinite;
-        }
+        #start-button, #restart-button { background-color: var(--main-color); color: white; border: none; padding: 1rem 2rem; border-radius: 10px; font-size: 1.5rem; cursor: pointer; font-family: 'Mochiy Pop One', sans-serif; margin-top: 1rem; }
 
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-30px);} 60% {transform: translateY(-15px);} }
-        @keyframes shake { 0%, 100% {transform: translateX(0);} 10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);} 20%, 40%, 60%, 80% {transform: translateX(10px);} }
+        .game-screen, #clear-screen, #piano-container { display: none; }
+        #clear-screen h1 { font-size: 2.5rem; color: var(--level-up-color); animation: bounce 2s infinite; }
+
+        /* ピアノ鍵盤のスタイル */
+        #piano-container { padding: 1rem 0; }
+        .piano-keyboard { display: flex; position: relative; width: 100%; height: 180px; }
+        .key { border-radius: 0 0 5px 5px; cursor: pointer; transition: all 0.1s ease; box-sizing: border-box; }
+        .key.white { flex: 1; height: 100%; background-color: white; border: 1px solid #999; }
+        .key.black { position: absolute; width: 8%; height: 60%; background-color: var(--black-key-color); color: white; z-index: 2; border: 2px solid #222; }
+        .key.white:active { background-color: #eee; }
+        .key.black:active { background-color: #555; }
+        .key.inactive { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+        .key.correct-key { background-color: var(--correct-color) !important; border-color: var(--correct-color) !important; }
+        .key.wrong-key { background-color: var(--wrong-color) !important; border-color: var(--wrong-color) !important; }
+
+        @keyframes bounce { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-20px)} 60%{transform:translateY(-10px)} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 10%,50%,90%{transform:translateX(-8px)} 30%,70%{transform:translateX(8px)} }
     </style>
 </head>
 <body>
 
     <div class="container" id="container">
-        
         <div id="start-screen">
             <h1>おとあてゲーム！</h1>
             <p>♪ のボタンをおして、きこえたおとをあててね！</p>
@@ -176,284 +78,135 @@
         <div id="game-screen" class="game-screen">
             <h1>このおとなあに？</h1>
             <div class="info-panel">
-                <div id="level">レベル: 1</div>
-                <div id="score">スコア: 0</div>
+                <div id="level"></div><div id="score"></div>
             </div>
-            <div class="progress-bar-container">
-                <div id="progress-bar" class="progress-bar"></div>
-            </div>
+            <div class="progress-bar-container"><div id="progress-bar" class="progress-bar"></div></div>
             <button id="play-button">♪</button>
             <div class="choices" id="choices"></div>
+            <div id="piano-container">
+                <div class="piano-keyboard" id="piano-keyboard">
+                    <div class="key white" data-note="ド"></div> <div class="key white" data-note="レ"></div>
+                    <div class="key white" data-note="ミ"></div> <div class="key white" data-note="ファ"></div>
+                    <div class="key white" data-note="ソ"></div> <div class="key white" data-note="ラ"></div>
+                    <div class="key white" data-note="シ"></div> <div class="key white" data-note="ド2"></div>
+                    <div class="key black" data-note="ド♯" style="left: 8.75%;"></div>
+                    <div class="key black" data-note="レ♯" style="left: 21.25%;"></div>
+                    <div class="key black" data-note="ファ♯" style="left: 46.25%;"></div>
+                    <div class="key black" data-note="ソ♯" style="left: 58.75%;"></div>
+                    <div class="key black" data-note="ラ♯" style="left: 71.25%;"></div>
+                </div>
+            </div>
             <div id="feedback" class="feedback"></div>
         </div>
         
-        <!-- 全クリア画面 -->
         <div id="clear-screen">
             <h1>🎉 全クリおめでとう！🎉</h1>
             <p>きみは おとのマスターだ！</p>
-            <p id="final-score" style="font-size: 1.5rem;"></p>
+            <p id="final-score"></p>
             <button id="restart-button">もういちどあそぶ</button>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        // --- DOM要素 ---
-        const container = document.getElementById('container');
-        const startScreen = document.getElementById('start-screen');
-        const gameScreen = document.getElementById('game-screen');
-        const clearScreen = document.getElementById('clear-screen');
-        const startButton = document.getElementById('start-button');
-        const restartButton = document.getElementById('restart-button');
-        const playButton = document.getElementById('play-button');
-        const choicesContainer = document.getElementById('choices');
-        const feedbackEl = document.getElementById('feedback');
-        const scoreEl = document.getElementById('score');
-        const levelEl = document.getElementById('level');
-        const progressBar = document.getElementById('progress-bar');
-        const finalScoreEl = document.getElementById('final-score');
-
-        // --- 音声関連 ---
+        const ui = { container: document.getElementById('container'), startScreen: document.getElementById('start-screen'), gameScreen: document.getElementById('game-screen'), clearScreen: document.getElementById('clear-screen'), startButton: document.getElementById('start-button'), restartButton: document.getElementById('restart-button'), playButton: document.getElementById('play-button'), choices: document.getElementById('choices'), feedback: document.getElementById('feedback'), score: document.getElementById('score'), level: document.getElementById('level'), progressBar: document.getElementById('progress-bar'), finalScore: document.getElementById('final-score'), pianoContainer: document.getElementById('piano-container'), pianoKeyboard: document.getElementById('piano-keyboard') };
         let audioContext;
-        function initAudioContext() {
-            if (!audioContext) {
-                try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); }
-                catch (e) { alert('お使いのブラウザは音を出す機能に対応していません。'); }
-            }
-        }
-
-        // --- ゲーム設定 ---
-        const ALL_SCALES = {
-            'ド': 261.63, 'ド♯': 277.18, 'レ': 293.66, 'レ♯': 311.13, 'ミ': 329.63, 'ファ': 349.23,
-            'ファ♯': 369.99, 'ソ': 392.00, 'ソ♯': 415.30, 'ラ': 440.00, 'ラ♯': 466.16, 'シ': 493.88
-        };
+        function initAudioContext() { if (!audioContext) try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { alert('お使いのブラウザは音を出す機能に対応していません。'); }}
+        const ALL_SCALES = { 'ド': 261.63, 'ド♯': 277.18, 'レ': 293.66, 'レ♯': 311.13, 'ミ': 329.63, 'ファ': 349.23, 'ファ♯': 369.99, 'ソ': 392.00, 'ソ♯': 415.30, 'ラ': 440.00, 'ラ♯': 466.16, 'シ': 493.88, 'ド2': 523.25 };
         const ALL_NOTE_NAMES = Object.keys(ALL_SCALES);
-        
-        const LEVEL_CONFIG = {
-            1: { notes: ['ド', 'レ', 'ミ'], required: 5 },
-            2: { notes: ['ド', 'レ', 'ミ', 'ファ', 'ソ'], required: 5 },
-            3: { notes: ['ド', 'レ', 'ミ', 'ファ', 'ソ', 'ラ', 'シ'], required: 5 },
-            4: { notes: ALL_NOTE_NAMES, required: 5 } // ★レベル4: 全12音
-        };
+        const LEVEL_CONFIG = { 1: { notes: ['ド', 'レ', 'ミ'], required: 5, ui: 'buttons' }, 2: { notes: ['ド', 'レ', 'ミ', 'ファ', 'ソ'], required: 5, ui: 'buttons' }, 3: { notes: ['ド', 'レ', 'ミ', 'ファ', 'ソ', 'ラ', 'シ'], required: 5, ui: 'buttons' }, 4: { notes: ALL_NOTE_NAMES.slice(0, 12), required: 5, ui: 'buttons' }, 5: { notes: ['ド', 'レ', 'ミ'], required: 5, ui: 'keyboard' }, 6: { notes: ['ド', 'レ', 'ミ', 'ファ', 'ソ'], required: 5, ui: 'keyboard' }, 7: { notes: ALL_NOTE_NAMES.filter(n => !n.includes('♯')), required: 5, ui: 'keyboard' }, 8: { notes: ALL_NOTE_NAMES, required: 5, ui: 'keyboard' } };
         const MAX_LEVEL = Object.keys(LEVEL_CONFIG).length;
+        let state = { currentNote: '', score: 0, level: 1, consecutiveCorrect: 0, isAnswered: false };
 
-        // --- ゲーム状態 ---
-        let currentNote = '', score = 0, level = 1, consecutiveCorrect = 0, isAnswered = false;
-
-        // --- 音声再生 ---
-        function playPianoSound(freq) { /* 変更なし */ }
-        function playEffectSound(type) { /* 変更なし、後でファンファーレ追加 */ }
-        function playFanfare() {
-            if (!audioContext) return;
-            const now = audioContext.currentTime;
-            const t = 0.15; // 音の長さの基本単位
-            const fanfareNotes = [
-                { f: 392, d: t*2, w: now },         // ソ
-                { f: 523, d: t*2, w: now + t*2 },   // ド
-                { f: 587, d: t,   w: now + t*4 },   // レ
-                { f: 659, d: t,   w: now + t*5 },   // ミ
-                { f: 784, d: t*4, w: now + t*6 },   // ソ(高)
-                { f: 659, d: t*2, w: now + t*10 },  // ミ
-                { f: 784, d: t*4, w: now + t*12 },  // ソ(高)
-            ];
-
-            fanfareNotes.forEach(note => {
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(note.f, note.w);
-                osc.connect(gain);
-                gain.connect(audioContext.destination);
-                gain.gain.setValueAtTime(0.4, note.w);
-                gain.gain.exponentialRampToValueAtTime(0.01, note.w + note.d);
-                osc.start(note.w);
-                osc.stop(note.w + note.d);
-            });
-        }
-        
-        // --- ゲーム進行 ---
         function generateQuestion() {
-            isAnswered = false;
-            container.classList.remove('ready-for-next', 'game-cleared');
-            feedbackEl.innerHTML = '';
-            feedbackEl.className = 'feedback';
-            
-            const config = LEVEL_CONFIG[level];
-            const notes = config.notes;
-            currentNote = notes[Math.floor(Math.random() * notes.length)];
-            
-            createChoiceButtons(notes);
-            enableChoiceButtons(true);
+            Object.assign(state, { isAnswered: false });
+            ui.container.classList.remove('ready-for-next', 'game-cleared');
+            ui.feedback.innerHTML = ''; ui.feedback.className = 'feedback';
+            const config = LEVEL_CONFIG[state.level];
+            state.currentNote = config.notes[Math.floor(Math.random() * config.notes.length)];
+            setupUIForLevel();
             updateStatus();
         }
-        
-        function createChoiceButtons(notes) {
-            choicesContainer.innerHTML = '';
-            notes.forEach(name => {
-                const btn = document.createElement('button');
-                btn.textContent = name;
-                btn.classList.add('choice-btn');
-                if (name.includes('♯')) {
-                    btn.classList.add('black-key'); // 黒鍵スタイルを適用
-                }
-                btn.dataset.note = name;
-                choicesContainer.appendChild(btn);
-            });
+
+        function setupUIForLevel() {
+            const config = LEVEL_CONFIG[state.level];
+            const isKeyboardView = config.ui === 'keyboard';
+            ui.choices.style.display = isKeyboardView ? 'none' : 'grid';
+            ui.pianoContainer.style.display = isKeyboardView ? 'block' : 'none';
+            if (isKeyboardView) { updatePianoKeyboard(config.notes); } 
+            else { createChoiceButtons(config.notes); }
         }
-        
+
         function checkAnswer(selectedNote) {
-            if (isAnswered) return;
-            isAnswered = true;
-            enableChoiceButtons(false);
-            
+            if (state.isAnswered) return;
+            state.isAnswered = true;
+            const isCorrect = selectedNote === state.currentNote;
             const nextMsg = `<span class="sub-text">がめんをタップしてつぎへ</span>`;
-            
-            if (selectedNote === currentNote) {
-                // 正解
-                score += 10;
-                consecutiveCorrect++;
-                const required = LEVEL_CONFIG[level].required;
-                
-                if (consecutiveCorrect >= required) {
-                    // レベルアップ or 全クリア
-                    if (level < MAX_LEVEL) {
-                        level++;
-                        consecutiveCorrect = 0;
-                        feedbackEl.innerHTML = `レベルアップ！レベル${level}になったよ！ 🚀 ${nextMsg}`;
-                        feedbackEl.classList.add('level-up');
-                        playEffectSound('levelUp');
-                        playConfetti(true);
+            if (LEVEL_CONFIG[state.level].ui === 'keyboard') { highlightPianoKey(selectedNote, isCorrect); }
+
+            if (isCorrect) {
+                state.score += 10; state.consecutiveCorrect++;
+                if (state.consecutiveCorrect >= LEVEL_CONFIG[state.level].required) {
+                    if (state.level < MAX_LEVEL) {
+                        state.level++; state.consecutiveCorrect = 0;
+                        let msg = `レベルアップ！レベル${state.level}になったよ！ 🚀`;
+                        if (LEVEL_CONFIG[state.level].ui === 'keyboard' && LEVEL_CONFIG[state.level - 1].ui === 'buttons') {
+                            msg = 'すごい！つぎは けんばん でこたえてね！🎹';
+                        }
+                        ui.feedback.innerHTML = `${msg} ${nextMsg}`;
+                        ui.feedback.classList.add('level-up');
+                        playEffectSound('levelUp'); playConfetti(true);
                     } else {
-                        // 全クリア処理
-                        gameClear();
-                        return;
+                        // ★全クリア処理の呼び出し
+                        ui.feedback.innerHTML = `🎉🎉🎉 全ステージクリア！ 🎉🎉🎉`;
+                        ui.feedback.classList.add('level-up');
+                        gameClear(); return;
                     }
                 } else {
-                    feedbackEl.innerHTML = `せいかい！すごい！ ✨ ${nextMsg}`;
-                    feedbackEl.classList.add('correct');
-                    playEffectSound('correct');
-                    playConfetti(false);
+                    ui.feedback.innerHTML = `せいかい！すごい！ ✨ ${nextMsg}`;
+                    ui.feedback.classList.add('correct');
+                    playEffectSound('correct'); playConfetti(false);
                 }
             } else {
-                // 不正解
-                consecutiveCorrect = 0;
-                feedbackEl.innerHTML = `ざんねん！こたえは「${currentNote}」だよ ${nextMsg}`;
-                feedbackEl.classList.add('wrong');
+                state.consecutiveCorrect = 0;
+                ui.feedback.innerHTML = `ざんねん！こたえは「${state.currentNote}」だよ ${nextMsg}`;
+                ui.feedback.classList.add('wrong');
                 playEffectSound('wrong');
             }
             updateStatus();
-            container.classList.add('ready-for-next');
+            ui.container.classList.add('ready-for-next');
         }
 
-        function updateStatus() {
-            scoreEl.textContent = `スコア: ${score}`;
-            levelEl.textContent = `レベル: ${level}`;
-            const required = LEVEL_CONFIG[level].required;
-            const progress = (consecutiveCorrect / required) * 100;
-            progressBar.style.width = `${progress}%`;
-            progressBar.textContent = `${consecutiveCorrect} / ${required} れんぞくせいかい`;
-        }
-
+        // ★全クリア時のフローを修正
         function gameClear() {
-            gameScreen.style.display = 'none';
-            clearScreen.style.display = 'block';
-            finalScoreEl.textContent = `最終スコア: ${score}`;
-            container.classList.add('game-cleared');
             playFanfare();
-            playConfetti(true, 3000); // 3秒間紙吹雪を降らせる
-        }
-        
-        function startGame() {
-            score = 0;
-            level = 1;
-            consecutiveCorrect = 0;
-            initAudioContext();
-            startScreen.style.display = 'none';
-            clearScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
-            container.classList.remove('game-cleared');
-            generateQuestion();
-        }
-        
-        function enableChoiceButtons(e){document.querySelectorAll('.choice-btn').forEach(b=>b.disabled=!e);}
-        function playConfetti(isBig, duration) {
-            const end = Date.now() + (duration || 0);
-            (function frame() {
-                confetti({
-                    particleCount: isBig ? 7 : 2,
-                    angle: isBig ? 90 : 60,
-                    spread: isBig ? 180 : 55,
-                    origin: { x: isBig ? 0.5 : 0, y: 0.6 },
-                });
-                confetti({
-                    particleCount: isBig ? 7 : 2,
-                    angle: isBig ? 90 : 120,
-                    spread: isBig ? 180 : 55,
-                    origin: { x: isBig ? 0.5 : 1, y: 0.6 },
-                });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+            playConfetti(true, 3000); // 3秒間、紙吹雪を降らせ続ける
+            // 3秒待ってからクリア画面を表示
+            setTimeout(() => {
+                ui.gameScreen.style.display = 'none';
+                ui.clearScreen.style.display = 'block';
+                ui.finalScore.textContent = `最終スコア: ${state.score}`;
+                ui.container.classList.add('game-cleared');
+            }, 3000);
         }
 
-        // --- イベントリスナー ---
-        startButton.addEventListener('click', startGame);
-        restartButton.addEventListener('click', startGame);
-        playButton.addEventListener('click', () => !isAnswered && playPianoSound(ALL_SCALES[currentNote]));
-        choicesContainer.addEventListener('click', e => e.target.classList.contains('choice-btn') && checkAnswer(e.target.dataset.note));
-        container.addEventListener('click', e => {
-            if (isAnswered && !e.target.closest('button')) generateQuestion();
-            if (container.classList.contains('game-cleared') && !e.target.closest('button')) startGame();
-        });
+        function updatePianoKeyboard(activeNotes) { const keys = ui.pianoKeyboard.querySelectorAll('.key'); keys.forEach(key => { key.classList.remove('inactive', 'correct-key', 'wrong-key'); if (!activeNotes.includes(key.dataset.note)) { key.classList.add('inactive'); } }); }
+        function highlightPianoKey(selectedNote, isCorrect) { const correctKey = ui.pianoKeyboard.querySelector(`[data-note="${state.currentNote}"]`); if (isCorrect) { if(correctKey) correctKey.classList.add('correct-key'); } else { const selectedKey = ui.pianoKeyboard.querySelector(`[data-note="${selectedNote}"]`); if(selectedKey) selectedKey.classList.add('wrong-key'); if(correctKey) correctKey.classList.add('correct-key'); } }
+        function createChoiceButtons(notes) { ui.choices.innerHTML = ''; notes.forEach(name => { const btn = document.createElement('button'); btn.textContent = name; btn.className = 'choice-btn'; if (name.includes('♯')) btn.classList.add('black-key'); btn.dataset.note = name; ui.choices.appendChild(btn); }); }
+        function updateStatus() { ui.score.textContent = `スコア: ${state.score}`; ui.level.textContent = `レベル: ${state.level}`; const required = LEVEL_CONFIG[state.level].required; const progress = (state.consecutiveCorrect / required) * 100; ui.progressBar.style.width = `${progress}%`; ui.progressBar.textContent = `${state.consecutiveCorrect} / ${required} れんぞくせいかい`; }
+        function startGame() { Object.assign(state, { score: 0, level: 1, consecutiveCorrect: 0 }); initAudioContext(); ui.startScreen.style.display = 'none'; ui.clearScreen.style.display = 'none'; ui.gameScreen.style.display = 'block'; ui.container.classList.remove('game-cleared'); generateQuestion(); }
         
-        // --- ここから下は変更のない関数 ---
-        // playPianoSound と playEffectSound は元のコードと同じものをここにコピーしてください
-        function playPianoSound(frequency) {
-            if (!audioContext) return;
-            const now = audioContext.currentTime;
-            const gainNode = audioContext.createGain();
-            gainNode.gain.setValueAtTime(0, now);
-            gainNode.gain.linearRampToValueAtTime(0.5, now + 0.05);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
-            [1, 2, 3].forEach(harmonic => {
-                const osc = audioContext.createOscillator();
-                const overtoneGain = audioContext.createGain();
-                osc.type = harmonic === 1 ? 'triangle' : 'sine';
-                osc.frequency.setValueAtTime(frequency * harmonic, now);
-                overtoneGain.gain.setValueAtTime(1 / (harmonic * 2), now);
-                osc.connect(overtoneGain).connect(gainNode);
-                osc.start(now);
-                osc.stop(now + 1.5);
-            });
-            gainNode.connect(audioContext.destination);
-        }
-
-        function playEffectSound(type) {
-            if (!audioContext) return;
-            const now = audioContext.currentTime;
-            if (type === 'levelUp') {
-                [880, 1046, 1318].forEach((freq, i) => {
-                    const o = audioContext.createOscillator(), g = audioContext.createGain();
-                    o.type = 'sine'; o.frequency.value = freq;
-                    o.connect(g).connect(audioContext.destination);
-                    g.gain.setValueAtTime(0, now);
-                    g.gain.linearRampToValueAtTime(0.2, now + i * 0.1 + 0.05);
-                    g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
-                    o.start(now + i * 0.1); o.stop(now + i * 0.1 + 0.3);
-                });
-                return;
-            }
-            const osc = audioContext.createOscillator(), gain = audioContext.createGain();
-            osc.connect(gain); gain.connect(audioContext.destination);
-            if (type === 'correct') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, now);
-                osc.frequency.linearRampToValueAtTime(1046.50, now + 0.1);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(130.81, now);
-            }
-            gain.gain.setValueAtTime(0.3, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-            osc.start(now); osc.stop(now + 0.5);
-        }
+        ui.startButton.addEventListener('click', startGame);
+        ui.restartButton.addEventListener('click', startGame);
+        ui.playButton.addEventListener('click', () => !state.isAnswered && playPianoSound(ALL_SCALES[state.currentNote]));
+        ui.choices.addEventListener('click', e => { if (e.target.classList.contains('choice-btn')) checkAnswer(e.target.dataset.note); });
+        ui.pianoKeyboard.addEventListener('click', e => { if (state.isAnswered || !e.target.classList.contains('key') || e.target.classList.contains('inactive')) return; const note = e.target.dataset.note; playPianoSound(ALL_SCALES[note]); checkAnswer(note); });
+        ui.container.addEventListener('click', e => { if (state.isAnswered && !e.target.closest('button') && !e.target.closest('.key')) generateQuestion(); if (ui.container.classList.contains('game-cleared') && !e.target.closest('button')) startGame(); });
+        
+        function playPianoSound(frequency) { if (!audioContext) return; const now = audioContext.currentTime; const gainNode = audioContext.createGain(); gainNode.gain.setValueAtTime(0, now); gainNode.gain.linearRampToValueAtTime(0.5, now + 0.05); gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.5); [1, 2, 3].forEach(h => { const o = audioContext.createOscillator(), g = audioContext.createGain(); o.type = h === 1 ? 'triangle' : 'sine'; o.frequency.setValueAtTime(frequency * h, now); g.gain.setValueAtTime(1 / (h * 2), now); o.connect(g).connect(gainNode); o.start(now); o.stop(now + 1.5); }); gainNode.connect(audioContext.destination); }
+        function playEffectSound(type) { if(!audioContext)return; const n=audioContext.currentTime; if(type==='levelUp'){[880,1046,1318].forEach((f,i)=>{const o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=f;o.connect(g).connect(audioContext.destination);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(.2,n+i*.1+.05);g.gain.exponentialRampToValueAtTime(.001,n+i*.1+.3);o.start(n+i*.1);o.stop(n+i*.1+.3)});return}const o=audioContext.createOscillator(),g=audioContext.createGain();o.connect(g);g.connect(audioContext.destination);if(type==='correct'){o.type='sine';o.frequency.setValueAtTime(523.25,n);o.frequency.linearRampToValueAtTime(1046.5,n+.1)}else if(type==='wrong'){o.type='sawtooth';o.frequency.setValueAtTime(130.81,n)}g.gain.setValueAtTime(.3,n);g.gain.exponentialRampToValueAtTime(.001,n+.5);o.start(n);o.stop(n+.5)}
+        function playFanfare(){ if(!audioContext)return; const n=audioContext.currentTime,t=.15,f=[{f:392,d:t*2,w:n},{f:523,d:t*2,w:n+t*2},{f:587,d:t,w:n+t*4},{f:659,d:t,w:n+t*5},{f:784,d:t*4,w:n+t*6},{f:659,d:t*2,w:n+t*10},{f:784,d:t*4,w:n+t*12}];f.forEach(note=>{const o=audioContext.createOscillator(),g=audioContext.createGain();o.type='triangle';o.frequency.setValueAtTime(note.f,note.w);o.connect(g).connect(audioContext.destination);g.gain.setValueAtTime(.4,note.w);g.gain.exponentialRampToValueAtTime(.01,note.w+note.d);o.start(note.w);o.stop(note.w+note.d)})}
+        function playConfetti(isBig, duration) { const end = Date.now() + (duration || 0); (function frame() { const angle = isBig ? 90 : 60, spread = isBig ? 180 : 55, particleCount = isBig ? 7 : 2; confetti({ particleCount, angle, spread, origin: { x: isBig ? 0.5 : 0, y: 0.6 } }); confetti({ particleCount, angle: 180 - angle, spread, origin: { x: isBig ? 0.5 : 1, y: 0.6 } }); if (Date.now() < end) requestAnimationFrame(frame); }());}
     </script>
 </body>
 </html>
