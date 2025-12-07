@@ -40,9 +40,20 @@
         .info-panel { display: flex; justify-content: space-between; font-size: 1rem; margin-bottom: 0.5rem; }
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: 10px; margin: 0.5rem 0; height: 22px; overflow: hidden; }
         .progress-bar { width: 0%; height: 100%; background-color: var(--accent-color); border-radius: 10px; transition: width 0.5s ease-in-out; text-align: center; line-height: 22px; color: white; font-size: 0.8rem; white-space: nowrap; }
+        
         #play-button { background-color: var(--main-color); color: white; border: none; border-radius: 50%; width: 100px; height: 100px; font-size: 3.5rem; cursor: pointer; transition: all 0.2s; margin-bottom: 1rem; line-height: 100px; }
+        #play-button:active { transform: scale(0.95); }
 
-        /* ★文字ボタンのスタイル (黒鍵の色を修正) */
+        /* ★追加：最初だけボタンを目立たせるパルスアニメーション */
+        .pulse-btn {
+            animation: pulse-animation 2s infinite;
+        }
+        @keyframes pulse-animation {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 182, 193, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(255, 182, 193, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 182, 193, 0); }
+        }
+
         .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(65px, 1fr)); gap: 8px; margin-bottom: 1rem; }
         .choice-btn { background-color: var(--accent-color); color: white; border: none; padding: 0.8rem 0.2rem; border-radius: 10px; font-size: 1.2rem; font-family: 'Mochiy Pop One', sans-serif; cursor: pointer; transition: all 0.2s; }
         .choice-btn.black-key { background-color: var(--black-key-color); }
@@ -150,7 +161,7 @@
             if (state.isAnswered) return;
             state.isAnswered = true;
             const isCorrect = selectedNote === state.currentNote;
-            const nextMsg = `<span class="sub-text">がめんをタップしてつぎへ</span>`;
+            
             if (LEVEL_CONFIG[state.level].ui === 'keyboard') { highlightPianoKey(selectedNote, isCorrect); }
 
             if (isCorrect) {
@@ -162,22 +173,30 @@
                         if (LEVEL_CONFIG[state.level].ui === 'keyboard' && LEVEL_CONFIG[state.level - 1].ui === 'buttons') {
                             msg = 'すごい！つぎは けんばん でこたえてね！🎹';
                         }
-                        ui.feedback.innerHTML = `${msg} ${nextMsg}`;
+                        ui.feedback.innerHTML = `${msg}`;
                         ui.feedback.classList.add('level-up');
                         playEffectSound('levelUp'); playConfetti(true);
                     } else {
-                        // ★全クリア処理の呼び出し
                         ui.feedback.innerHTML = `🎉🎉🎉 全ステージクリア！ 🎉🎉🎉`;
                         ui.feedback.classList.add('level-up');
                         gameClear(); return;
                     }
                 } else {
-                    ui.feedback.innerHTML = `せいかい！すごい！ ✨ ${nextMsg}`;
+                    ui.feedback.innerHTML = `せいかい！すごい！ ✨`;
                     ui.feedback.classList.add('correct');
                     playEffectSound('correct'); playConfetti(false);
                 }
+
+                // 正解時は1.5秒後に自動で次へ
+                setTimeout(() => {
+                    if (state.isAnswered) {
+                        generateQuestion();
+                    }
+                }, 1500);
+
             } else {
                 state.consecutiveCorrect = 0;
+                const nextMsg = `<span class="sub-text">♪ をおして つぎのおとへ！</span>`;
                 ui.feedback.innerHTML = `ざんねん！こたえは「${state.currentNote}」だよ ${nextMsg}`;
                 ui.feedback.classList.add('wrong');
                 playEffectSound('wrong');
@@ -186,11 +205,9 @@
             ui.container.classList.add('ready-for-next');
         }
 
-        // ★全クリア時のフローを修正
         function gameClear() {
             playFanfare();
-            playConfetti(true, 3000); // 3秒間、紙吹雪を降らせ続ける
-            // 3秒待ってからクリア画面を表示
+            playConfetti(true, 3000);
             setTimeout(() => {
                 ui.gameScreen.style.display = 'none';
                 ui.clearScreen.style.display = 'block';
@@ -203,14 +220,47 @@
         function highlightPianoKey(selectedNote, isCorrect) { const correctKey = ui.pianoKeyboard.querySelector(`[data-note="${state.currentNote}"]`); if (isCorrect) { if(correctKey) correctKey.classList.add('correct-key'); } else { const selectedKey = ui.pianoKeyboard.querySelector(`[data-note="${selectedNote}"]`); if(selectedKey) selectedKey.classList.add('wrong-key'); if(correctKey) correctKey.classList.add('correct-key'); } }
         function createChoiceButtons(notes) { ui.choices.innerHTML = ''; notes.forEach(name => { const btn = document.createElement('button'); btn.textContent = name; btn.className = 'choice-btn'; if (name.includes('♯')) btn.classList.add('black-key'); btn.dataset.note = name; ui.choices.appendChild(btn); }); }
         function updateStatus() { ui.score.textContent = `スコア: ${state.score}`; ui.level.textContent = `レベル: ${state.level}`; const required = LEVEL_CONFIG[state.level].required; const progress = (state.consecutiveCorrect / required) * 100; ui.progressBar.style.width = `${progress}%`; ui.progressBar.textContent = `${state.consecutiveCorrect} / ${required} れんぞくせいかい`; }
-        function startGame() { Object.assign(state, { score: 0, level: 1, consecutiveCorrect: 0 }); initAudioContext(); ui.startScreen.style.display = 'none'; ui.clearScreen.style.display = 'none'; ui.gameScreen.style.display = 'block'; ui.container.classList.remove('game-cleared'); generateQuestion(); }
+        
+        function startGame() { 
+            Object.assign(state, { score: 0, level: 1, consecutiveCorrect: 0 }); 
+            initAudioContext(); 
+            ui.startScreen.style.display = 'none'; 
+            ui.clearScreen.style.display = 'none'; 
+            ui.gameScreen.style.display = 'block'; 
+            ui.container.classList.remove('game-cleared'); 
+            generateQuestion();
+            
+            // ★変更点：最初の1問目だけボタンを光らせ、メッセージを表示する
+            ui.playButton.classList.add('pulse-btn');
+            ui.feedback.innerHTML = '♪ ボタンをおして おとをきこう！';
+        }
         
         ui.startButton.addEventListener('click', startGame);
         ui.restartButton.addEventListener('click', startGame);
-        ui.playButton.addEventListener('click', () => !state.isAnswered && playPianoSound(ALL_SCALES[state.currentNote]));
+
+        ui.playButton.addEventListener('click', () => {
+            // ★変更点：ボタンが押されたらパルスアニメーションを止める
+            ui.playButton.classList.remove('pulse-btn');
+            // 案内テキストが表示されていたら消す
+            if (ui.feedback.textContent.includes('おとをきこう')) ui.feedback.innerHTML = '';
+
+            if (state.isAnswered) {
+                generateQuestion();
+                setTimeout(() => {
+                     playPianoSound(ALL_SCALES[state.currentNote]);
+                }, 50);
+            } else {
+                playPianoSound(ALL_SCALES[state.currentNote]);
+            }
+        });
+
         ui.choices.addEventListener('click', e => { if (e.target.classList.contains('choice-btn')) checkAnswer(e.target.dataset.note); });
         ui.pianoKeyboard.addEventListener('click', e => { if (state.isAnswered || !e.target.classList.contains('key') || e.target.classList.contains('inactive')) return; const note = e.target.dataset.note; playPianoSound(ALL_SCALES[note]); checkAnswer(note); });
-        ui.container.addEventListener('click', e => { if (state.isAnswered && !e.target.closest('button') && !e.target.closest('.key')) generateQuestion(); if (ui.container.classList.contains('game-cleared') && !e.target.closest('button')) startGame(); });
+        
+        ui.container.addEventListener('click', e => { 
+            if (state.isAnswered && !e.target.closest('button') && !e.target.closest('.key')) generateQuestion(); 
+            if (ui.container.classList.contains('game-cleared') && !e.target.closest('button')) startGame(); 
+        });
         
         function playPianoSound(frequency) { if (!audioContext) return; const now = audioContext.currentTime; const gainNode = audioContext.createGain(); gainNode.gain.setValueAtTime(0, now); gainNode.gain.linearRampToValueAtTime(0.5, now + 0.05); gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.5); [1, 2, 3].forEach(h => { const o = audioContext.createOscillator(), g = audioContext.createGain(); o.type = h === 1 ? 'triangle' : 'sine'; o.frequency.setValueAtTime(frequency * h, now); g.gain.setValueAtTime(1 / (h * 2), now); o.connect(g).connect(gainNode); o.start(now); o.stop(now + 1.5); }); gainNode.connect(audioContext.destination); }
         function playEffectSound(type) { if(!audioContext)return; const n=audioContext.currentTime; if(type==='levelUp'){[880,1046,1318].forEach((f,i)=>{const o=audioContext.createOscillator(),g=audioContext.createGain();o.type='sine';o.frequency.value=f;o.connect(g).connect(audioContext.destination);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(.2,n+i*.1+.05);g.gain.exponentialRampToValueAtTime(.001,n+i*.1+.3);o.start(n+i*.1);o.stop(n+i*.1+.3)});return}const o=audioContext.createOscillator(),g=audioContext.createGain();o.connect(g);g.connect(audioContext.destination);if(type==='correct'){o.type='sine';o.frequency.setValueAtTime(523.25,n);o.frequency.linearRampToValueAtTime(1046.5,n+.1)}else if(type==='wrong'){o.type='sawtooth';o.frequency.setValueAtTime(130.81,n)}g.gain.setValueAtTime(.3,n);g.gain.exponentialRampToValueAtTime(.001,n+.5);o.start(n);o.stop(n+.5)}
