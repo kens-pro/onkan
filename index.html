@@ -11,95 +11,270 @@
 
   gtag('config', 'G-S0M4L8GDW3');
 </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>絶対音感トレーニング</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>おとあてマジック！</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
 
         :root {
-            --bg-color: #f0f8ff; --main-color: #ffb6c1; --accent-color: #ffd700;
-            --text-color: #555; --correct-color: #32cd32; --wrong-color: #ff6347;
-            --level-up-color: #9370db; --black-key-color: #333;
+            /* 夢の国パレット */
+            --bg-gradient-start: #ffdde1;
+            --bg-gradient-end: #ee9ca7;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            
+            --primary-pink: #ff6b81;
+            --primary-pop: #ff4757;
+            --accent-yellow: #f1c40f;
+            --accent-orange: #ffa502;
+            --magic-purple: #a29bfe;
+            --sky-blue: #70a1ff;
+            
+            --text-main: #2f3542;
+            --text-sub: #57606f;
+            
+            --correct-green: #2ed573;
+            --wrong-red: #ff4757;
         }
 
         body {
-            font-family: 'Mochiy+Pop+One', sans-serif; background-color: var(--bg-color);
-            color: var(--text-color); display: flex; justify-content: center;
-            align-items: center; min-height: 100vh; margin: 0; padding: 1rem 0;
-            text-align: center; overflow-x: hidden;
+            font-family: 'Mochiy+Pop+One', sans-serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+            overflow-x: hidden;
+            /* 背景にドット柄を重ねる */
+            background-image: radial-gradient(rgba(255,255,255,0.4) 2px, transparent 2px), linear-gradient(-45deg, #ff9a9e, #a18cd1);
+            background-size: 30px 30px, 400% 400%;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
-            background-color: white; padding: 1rem 1.5rem; border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); width: 95%; max-width: 600px;
-            position: relative; cursor: default;
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 35px;
+            box-shadow: 
+                0 20px 50px rgba(0,0,0,0.15),
+                0 0 0 8px rgba(255,255,255,0.5); /* 外側のふちどり */
+            width: 100%;
+            max-width: 550px;
+            position: relative;
+            cursor: default;
+            backdrop-filter: blur(5px);
+            border: 4px solid #fff;
+            animation: floatContainer 6s ease-in-out infinite;
         }
+
+        @keyframes floatContainer {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
         .container.ready-for-next, .container.game-cleared { cursor: pointer; }
 
-        h1 { color: var(--main-color); margin-top: 0; font-size: 1.8rem; }
-        .info-panel { display: flex; justify-content: space-between; font-size: 1rem; margin-bottom: 0.5rem; }
-        .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: 10px; margin: 0.5rem 0; height: 22px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background-color: var(--accent-color); border-radius: 10px; transition: width 0.5s ease-in-out; text-align: center; line-height: 22px; color: white; font-size: 0.8rem; white-space: nowrap; }
-        
-        #play-button { background-color: var(--main-color); color: white; border: none; border-radius: 50%; width: 100px; height: 100px; font-size: 3.5rem; cursor: pointer; transition: all 0.2s; margin-bottom: 1rem; line-height: 100px; }
-        #play-button:active { transform: scale(0.95); }
-
-        /* ★追加：最初だけボタンを目立たせるパルスアニメーション */
-        .pulse-btn {
-            animation: pulse-animation 2s infinite;
-        }
-        @keyframes pulse-animation {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 182, 193, 0.7); }
-            70% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(255, 182, 193, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 182, 193, 0); }
+        h1 { 
+            color: var(--primary-pop);
+            margin-top: 0;
+            font-size: 2rem;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+            letter-spacing: 0.1rem;
         }
 
-        .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(65px, 1fr)); gap: 8px; margin-bottom: 1rem; }
-        .choice-btn { background-color: var(--accent-color); color: white; border: none; padding: 0.8rem 0.2rem; border-radius: 10px; font-size: 1.2rem; font-family: 'Mochiy Pop One', sans-serif; cursor: pointer; transition: all 0.2s; }
-        .choice-btn.black-key { background-color: var(--black-key-color); }
+        p { color: var(--text-sub); font-size: 1.1rem; }
+
+        /* スコア・レベル表示 */
+        .info-panel { 
+            display: flex; 
+            justify-content: space-around; 
+            font-size: 1.1rem; 
+            margin-bottom: 0.8rem;
+            background: #fff;
+            padding: 10px;
+            border-radius: 20px;
+            border: 2px solid #f1f2f6;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+        #level, #score { font-weight: bold; color: var(--magic-purple); }
+
+        /* プログレスバー */
+        .progress-bar-container { 
+            width: 100%; 
+            background-color: #dfe4ea; 
+            border-radius: 15px; 
+            margin: 1rem 0; 
+            height: 26px; 
+            overflow: hidden; 
+            border: 2px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .progress-bar { 
+            width: 0%; 
+            height: 100%; 
+            background: repeating-linear-gradient(
+                45deg,
+                var(--accent-yellow),
+                var(--accent-yellow) 10px,
+                var(--accent-orange) 10px,
+                var(--accent-orange) 20px
+            );
+            border-radius: 15px; 
+            transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center; 
+            line-height: 26px; 
+            color: #fff; 
+            font-size: 0.9rem; 
+            white-space: nowrap; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-weight: bold;
+        }
+
+        /* プレイボタン（魔法のボタン） */
+        #play-button { 
+            background: radial-gradient(circle at 30% 30%, #ff9ff3, #f368e0);
+            color: white; 
+            border: 4px solid #fff; 
+            border-radius: 50%; 
+            width: 110px; 
+            height: 110px; 
+            font-size: 4rem; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            margin-bottom: 1.5rem; 
+            line-height: 100px; 
+            box-shadow: 
+                0 10px 20px rgba(243, 104, 224, 0.4),
+                inset 0 5px 10px rgba(255,255,255,0.5);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        #play-button::after {
+            content: '♪';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%;
+            background: transparent;
+        }
+        #play-button:active { transform: scale(0.95) translateY(5px); box-shadow: 0 5px 10px rgba(243, 104, 224, 0.4); }
+
+        /* パルスアニメーション */
+        .pulse-btn { animation: pulse-magic 1.5s infinite; }
+        @keyframes pulse-magic {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(243, 104, 224, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 30px rgba(243, 104, 224, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(243, 104, 224, 0); }
+        }
+
+        /* 選択肢ボタン（キャンディ風） */
+        .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+        .choice-btn { 
+            background: linear-gradient(to bottom, #7bed9f, #2ed573);
+            color: white; 
+            border: none; 
+            padding: 1rem 0.2rem; 
+            border-radius: 15px; 
+            font-size: 1.3rem; 
+            font-family: 'Mochiy Pop One', sans-serif; 
+            cursor: pointer; 
+            transition: all 0.1s; 
+            box-shadow: 0 6px 0 #218c74, 0 10px 10px rgba(0,0,0,0.1);
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+            position: relative;
+            top: 0;
+        }
+        .choice-btn:active { 
+            top: 6px; 
+            box-shadow: 0 0 0 #218c74, inset 0 2px 5px rgba(0,0,0,0.2); 
+        }
         
-        .feedback { font-size: 1.3rem; font-weight: bold; min-height: 60px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .feedback .sub-text { font-size: 1rem; color: #888; margin-top: 5px; }
+        .choice-btn.black-key { 
+            background: linear-gradient(to bottom, #57606f, #2f3542);
+            box-shadow: 0 6px 0 #1e272e, 0 10px 10px rgba(0,0,0,0.1);
+        }
+        .choice-btn.black-key:active { box-shadow: 0 0 0 #1e272e, inset 0 2px 5px rgba(0,0,0,0.5); }
+        
+        /* フィードバック表示 */
+        .feedback { font-size: 1.5rem; font-weight: bold; min-height: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-shadow: 2px 2px 0 #fff; }
+        .feedback .sub-text { font-size: 1rem; color: var(--text-sub); margin-top: 5px; background: rgba(255,255,255,0.8); padding: 5px 15px; border-radius: 20px; }
 
-        .feedback.correct { color: var(--correct-color); animation: bounce 0.5s; }
-        .feedback.wrong { color: var(--wrong-color); animation: shake 0.5s; }
-        .feedback.level-up { color: var(--level-up-color); animation: bounce 0.8s; }
+        .feedback.correct { color: var(--correct-green); animation: bounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        .feedback.wrong { color: var(--wrong-red); animation: shake 0.5s; }
+        .feedback.level-up { color: var(--magic-purple); animation: bounce 0.8s; font-size: 1.8rem; }
 
-        #start-button, #restart-button { background-color: var(--main-color); color: white; border: none; padding: 1rem 2rem; border-radius: 10px; font-size: 1.5rem; cursor: pointer; font-family: 'Mochiy Pop One', sans-serif; margin-top: 1rem; }
+        /* スタート・リスタートボタン */
+        #start-button, #restart-button { 
+            background: linear-gradient(to bottom, #ff9ff3, #f368e0);
+            color: white; 
+            border: none; 
+            padding: 1.2rem 3rem; 
+            border-radius: 50px; 
+            font-size: 1.6rem; 
+            cursor: pointer; 
+            font-family: 'Mochiy Pop One', sans-serif; 
+            margin-top: 1.5rem; 
+            box-shadow: 0 8px 0 #c445b0, 0 15px 20px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        #start-button:active, #restart-button:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 #c445b0, inset 0 2px 5px rgba(0,0,0,0.2);
+        }
 
         .game-screen, #clear-screen, #piano-container { display: none; }
-        #clear-screen h1 { font-size: 2.5rem; color: var(--level-up-color); animation: bounce 2s infinite; }
+        #clear-screen h1 { font-size: 2.8rem; color: var(--accent-orange); animation: floatContainer 3s infinite; }
 
-        /* ピアノ鍵盤のスタイル */
-        #piano-container { padding: 1rem 0; }
-        .piano-keyboard { display: flex; position: relative; width: 100%; height: 180px; }
-        .key { border-radius: 0 0 5px 5px; cursor: pointer; transition: all 0.1s ease; box-sizing: border-box; }
-        .key.white { flex: 1; height: 100%; background-color: white; border: 1px solid #999; }
-        .key.black { position: absolute; width: 8%; height: 60%; background-color: var(--black-key-color); color: white; z-index: 2; border: 2px solid #222; }
-        .key.white:active { background-color: #eee; }
-        .key.black:active { background-color: #555; }
-        .key.inactive { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
-        .key.correct-key { background-color: var(--correct-color) !important; border-color: var(--correct-color) !important; }
-        .key.wrong-key { background-color: var(--wrong-color) !important; border-color: var(--wrong-color) !important; }
+        /* ピアノ鍵盤（おもちゃ風） */
+        #piano-container { padding: 1.5rem 0; margin: 0 auto; width: 100%; max-width: 480px; }
+        .piano-keyboard { display: flex; position: relative; width: 100%; height: 200px; background: #333; padding: 10px; border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); box-sizing: border-box; }
+        .key { border-radius: 0 0 10px 10px; cursor: pointer; transition: all 0.1s ease; box-sizing: border-box; }
+        .key.white { 
+            flex: 1; height: 100%; background: linear-gradient(to bottom, #fff 0%, #f1f2f6 100%); 
+            border: 1px solid #ccc; margin: 0 2px; box-shadow: 0 5px 0 #bdc3c7; 
+        }
+        .key.black { 
+            position: absolute; width: 8%; height: 60%; 
+            background: linear-gradient(to bottom, #57606f, #2f3542);
+            color: white; z-index: 2; 
+            border: 1px solid #000; border-radius: 0 0 8px 8px;
+            box-shadow: 2px 5px 5px rgba(0,0,0,0.4);
+        }
+        .key.white:active { background: #dfe4ea; transform: translateY(5px); box-shadow: none; }
+        .key.black:active { background: #222; transform: translateY(3px); box-shadow: none; }
+        
+        .key.inactive { opacity: 0.5; cursor: not-allowed; pointer-events: none; filter: grayscale(100%); }
+        .key.correct-key { background: #2ed573 !important; border-color: #2ed573 !important; box-shadow: 0 0 20px #2ed573 !important; transform: translateY(5px); }
+        .key.wrong-key { background: #ff4757 !important; border-color: #ff4757 !important; transform: translateY(5px); }
 
-        @keyframes bounce { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-20px)} 60%{transform:translateY(-10px)} }
-        @keyframes shake { 0%,100%{transform:translateX(0)} 10%,50%,90%{transform:translateX(-8px)} 30%,70%{transform:translateX(8px)} }
+        @keyframes bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 10%,50%,90%{transform:translateX(-8px) rotate(-5deg)} 30%,70%{transform:translateX(8px) rotate(5deg)} }
     </style>
 </head>
 <body>
 
     <div class="container" id="container">
         <div id="start-screen">
-            <h1>おとあてゲーム！</h1>
-            <p>♪ のボタンをおして、きこえたおとをあててね！</p>
+            <h1>🏰 おとあて<br>マジック！ 🎡</h1>
+            <p>♪ のボタンをおして<br>きこえた「おと」をあててね！</p>
             <button id="start-button">はじめる！</button>
         </div>
 
         <div id="game-screen" class="game-screen">
-            <h1>このおとなあに？</h1>
             <div class="info-panel">
                 <div id="level"></div><div id="score"></div>
             </div>
+            <h1>このおとなあに？</h1>
             <div class="progress-bar-container"><div id="progress-bar" class="progress-bar"></div></div>
             <button id="play-button">♪</button>
             <div class="choices" id="choices"></div>
@@ -120,9 +295,9 @@
         </div>
         
         <div id="clear-screen">
-            <h1>🎉 全クリおめでとう！🎉</h1>
-            <p>きみは おとのマスターだ！</p>
-            <p id="final-score"></p>
+            <h1>👑 全クリ<br>おめでとう！👑</h1>
+            <p>きみは おとのマスターだ！<br>まほうの世界は きみのもの！</p>
+            <p id="final-score" style="font-size: 1.5rem; color: #ff4757; font-weight: bold;"></p>
             <button id="restart-button">もういちどあそぶ</button>
         </div>
     </div>
@@ -169,7 +344,7 @@
                 if (state.consecutiveCorrect >= LEVEL_CONFIG[state.level].required) {
                     if (state.level < MAX_LEVEL) {
                         state.level++; state.consecutiveCorrect = 0;
-                        let msg = `レベルアップ！レベル${state.level}になったよ！ 🚀`;
+                        let msg = `レベルアップ！レベル${state.level}だ！ 🚀`;
                         if (LEVEL_CONFIG[state.level].ui === 'keyboard' && LEVEL_CONFIG[state.level - 1].ui === 'buttons') {
                             msg = 'すごい！つぎは けんばん でこたえてね！🎹';
                         }
@@ -230,18 +405,16 @@
             ui.container.classList.remove('game-cleared'); 
             generateQuestion();
             
-            // ★変更点：最初の1問目だけボタンを光らせ、メッセージを表示する
+            // 最初の1問目だけボタンを光らせ、メッセージを表示する
             ui.playButton.classList.add('pulse-btn');
-            ui.feedback.innerHTML = '♪ ボタンをおして おとをきこう！';
+            ui.feedback.innerHTML = '<span style="color:#ff6b81">♪ ボタンをおして おとをきこう！</span>';
         }
         
         ui.startButton.addEventListener('click', startGame);
         ui.restartButton.addEventListener('click', startGame);
 
         ui.playButton.addEventListener('click', () => {
-            // ★変更点：ボタンが押されたらパルスアニメーションを止める
             ui.playButton.classList.remove('pulse-btn');
-            // 案内テキストが表示されていたら消す
             if (ui.feedback.textContent.includes('おとをきこう')) ui.feedback.innerHTML = '';
 
             if (state.isAnswered) {
